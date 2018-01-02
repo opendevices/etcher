@@ -18,6 +18,7 @@
 
 const m = require('mochainon')
 const _ = require('lodash')
+const fs = require('fs')
 const path = require('path')
 const supportedFormats = require('../../../lib/shared/supported-formats')
 const angular = require('angular')
@@ -25,6 +26,14 @@ const flashState = require('../../../lib/shared/models/flash-state')
 const availableDrives = require('../../../lib/shared/models/available-drives')
 const selectionState = require('../../../lib/shared/models/selection-state')
 require('angular-mocks')
+
+// Mock HTML requires by reading from the file-system
+// eslint-disable-next-line node/no-deprecated-api
+require.extensions['.html'] = (module, filename) => {
+  return fs.readFileSync(filename, {
+    encoding: 'utf8'
+  })
+}
 
 describe('Browser: MainPage', function () {
   beforeEach(angular.mock.module(
